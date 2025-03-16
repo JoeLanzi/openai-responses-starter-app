@@ -1,13 +1,18 @@
 import { MODEL } from "@/config/constants";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export async function POST(request: Request) {
   try {
     const { messages, tools } = await request.json();
     console.log("Received messages:", messages);
 
-    const openai = new OpenAI();
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
 
     const events = await openai.responses.create({
       model: MODEL,
